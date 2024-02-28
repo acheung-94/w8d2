@@ -37,21 +37,22 @@ Array.prototype.myMap = function(cb2){
 
 
 Array.prototype.myReduce = function(callback, initialValue){
-    
-    this.myEach(ele => {
-        if (initialValue === undefined){
-            let initialValue = this[0]
-        } else {
-            let initialValue = initialValue
-        }
-        initialValue = callback(initialValue, ele)
-    })
-    return initialValue
+    if (initialValue){
+        this.myEach(ele => {
+            initialValue = callback(initialValue, ele)
+        })
+    }else{
+        initialValue = this[0]
+        this.slice(1).myEach(ele => {
+            initialValue = callback(initialValue, ele)
+        })
+    }
+    return initialValue;
 }
 
 let array = [1, 2, 3, 4, 5, 6]
 let callback = function(acc, ele){
     return (acc + ele)
 }
-console.log(array.myReduce(callback, initialValue))
+console.log(array.myReduce(callback, 25))
 
